@@ -1,2 +1,2 @@
 # STiSAN
-A Spatio-Temporal Interval-Aware Sequential POI Recommendation
+The code for Spatial-Temporal interval aware Sequential POI Recommendation
