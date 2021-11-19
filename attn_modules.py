@@ -88,44 +88,6 @@ class Interval_Attn(nn.Module):
         return torch.matmul(p_attns, value)
 
 
-class Rm_Attn(nn.Module):
-    def __init__(self, dropout):
-        super(Interval_Attn, self).__init__()
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, query, key, value, relation_matrix, padding_mask, attn_mask):
-        d_k = query.size(-1)
-        scores = relation_matrix / math.sqrt(d_k)
-        if padding_mask is not None:
-            scores = scores.masked_fill(padding_mask == 0.0, -1e9)
-        if attn_mask is not None:
-            attn_mask = attn_mask.unsqueeze(0)
-            scores = scores.masked_fill(attn_mask == 0.0, -1e9)
-        p_attns = F.softmax(scores, dim=-1)
-        p_attns = self.dropout(p_attns)
-
-        return torch.matmul(p_attns, value)
-
-
-class Self_Attn(nn.Module):
-    def __init__(self, dropout):
-        super(Interval_Attn, self).__init__()
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, query, key, value, relation_matrix, padding_mask, attn_mask):
-        d_k = query.size(-1)
-        scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
-        if padding_mask is not None:
-            scores = scores.masked_fill(padding_mask == 0.0, -1e9)
-        if attn_mask is not None:
-            attn_mask = attn_mask.unsqueeze(0)
-            scores = scores.masked_fill(attn_mask == 0.0, -1e9)
-        p_attns = F.softmax(scores, dim=-1)
-        p_attns = self.dropout(p_attns)
-
-        return torch.matmul(p_attns, value)
-
-
 
 class Interval_Aware_Attention_Block(nn.Module):
     def __init__(self, size, attn, ffn, dropout):
