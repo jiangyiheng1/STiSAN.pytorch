@@ -1,2 +1,2 @@
-# STiSAN
-The code for Spatial-Temporal interval aware Sequential POI Recommendation
+Code for STiSAN.
+Corrsponding paper "Spatial-Tempotal Interval Aware Sequential POI Recommendation" has been accepted by ICDE 2022.
